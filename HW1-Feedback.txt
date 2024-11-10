@@ -1,0 +1,36 @@
+
+Essay Feedback
+Homework Assignment #1
+CMSI 4071 Fall 2024
+======================
+
+SUMMARY:
+   Excellent synopsis of the article.  You describe all the main points and
+   give the reader enough detail so that the article's statements are clear.
+   The specifics from the article are helpful to further define your main
+   points.
+
+CRITICAL THINKING:
+   Relation to S/W engineering:
+      Nice work on this section as well.  You have given me something to
+      consider with your description of failures in systems integration and
+      communication, and with your points about protecting the privacy of
+      users, particularly with vulnerable user populations.
+
+   Thoughts/opinions presented:
+      I also like the way you meld the ValuJet article with this one and
+      state the four things on which to focus.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Summary of article                  25
+   Relation to S/W engineering         25
+   Thoughts/opinions presented         25
+   Spelling/Grammar                    25
+                                     -----
+   Subtotal                           100
+   ------------------------------------------------------
+   Total Percentage:   100 out of 100 which is an A-plus
+
+Very good work on this!  Keep it up!
+

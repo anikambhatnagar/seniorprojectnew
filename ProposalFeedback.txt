@@ -1,0 +1,29 @@
+CMSI 4071 Fall 2024
+Project Proposal Feedback
+Project: Thrive
+=========================
+Proposal Document [2 points]:
+This is a very impressive project which has a LOT of parts.  It is a pretty
+sweeping scope for a one-semester project.  My recommendation would be for
+the team to sit down and prioritize all the sections to decide what parts to
+consider a "successful" project, then add the rest as "stretch goals" which
+can be added as time permits.
+
+One thing I noticed, in the first paragraph, you refer to your project as
+"Thrive" a couple of times, but you also seem to call it "Financial
+Navigator" in one spot.  Maybe a more deliberate read-through before you
+commit would be in order?
+
+Proposal Presentation [3 points]:
+Excellent presentation!  I really like the blue background, a nice neutral
+color.  The graphics are descriptive and nice to look at, reinforcing the
+text on the slide.  You all talked about the different segments and all
+seemed to have straight who would say what.  Most everyone faced the room
+and not the slides, too.  Well done!
+
+
+Summary:
+--------
+Total:  5% out of 5% for this deliverable.
+
+Nice job overall!  Keep up the good work.

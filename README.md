@@ -1,2 +1,2 @@
-# seniorproject
-new repo for senior project I
+# SeniorProject
+CMSI 4071

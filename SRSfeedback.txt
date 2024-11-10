@@ -1,0 +1,62 @@
+
+Documentation Feedback ~ Deliverable #2
+Software Requirements Specification
+Initial Development Schedule
+CMSI 4071 Fall 2024
+=======================================
+
+COMPONENT BREAKDOWN:
+   Nice work on the breakdown.  The components are well-thought-out and make
+   sense in context of the application.  This will be a sophisticated effort
+   and application so it's good that you have set it up with parts that can
+   be tailored for appropriate scope.
+
+FUNCTIONAL REQUIREMENTS:
+   For something this sophisticated, your requirements need to be specific.
+   For example, you have:
+
+      5.3.1.1 The system shall retrieve real estate listings from the Zillow
+              API.
+      5.3.1.2 The system shall display property details including price,
+              location, and square footage.
+
+   This should actually be a 'shall' and a 'will' as follows:
+
+      5.3.1.1 The system shall retrieve real estate listings from the Zillow
+              API.
+              In the event that the Zillow API is not available when queried
+              The system will display an error message to that effect.
+      5.3.1.2 The system shall display property details obtained from the
+              Zillow API.
+              Property details will include but not be limited to:
+                 * price
+                 * location
+                 * square footage
+
+   As you can see, you will need several more than two requirements for each
+   of the CSC/CSU modules.
+
+PERFORMANCE REQUIREMENTS:
+   These are good!  You've obviously thought about this...
+
+ENVIRONMENT REQUIREMENTS:
+   Just a question/observation, but will this NOT run on a Mac with M1/M2/M3
+   processor? You specifiy Intel only...
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Component Breakdown                 1/1
+   Functional Requirements             3/4
+   Performance Requirements            2/2
+   Environment Requirements            1/1
+                                     =====
+   Subtotal                            8/8
+   Preliminary Schedule                2/2
+   ------------------------------------------------------
+   Total Percentage:   10/10 = 100% which is an A-plus
+
+
+Overall, a fine job and a good start.  Make the changes as described by the
+end of the semester for full credit on this document.
+
+Good work!
