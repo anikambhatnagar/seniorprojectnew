@@ -1,6 +1,19 @@
 # SeniorProject
 CMSI 4071
 
+Simple User Manual: 
+Prerequisites:
+Xcode: Ensure that Xcode is installed on your macOS machine. You can download it from the Mac App Store or install it via the Apple Developer website.
+Git: Ensure that Git is installed on your machine. You can check this by running git --version in the terminal. If it's not installed, you can install it via Homebrew, or download it directly from git-scm.com.
+
+Step 1: Clone the Repository
+git clone https://github.com/anikambhatnagar/seniorprojectnew.git
+
+Step 2: Open the Project in Xcode
+Navigate to the folder where you cloned the repository.
+Inside the project folder, locate and open the .xcodeproj or .xcworkspace file
+
+
 status updates:
 
 week 9:
