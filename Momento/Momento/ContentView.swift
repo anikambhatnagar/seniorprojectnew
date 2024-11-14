@@ -9,6 +9,69 @@ import Firebase
 import FirebaseStorage
 import FirebaseCore
 
+struct JournalEntry: Identifiable, Hashable {
+    let id = UUID()
+    let date: Date
+    let photo: UIImage
+}
+
+enum ImageSource {
+    case camera
+    case photoLibrary
+}
+
+struct PhotoPickerView: UIViewControllerRepresentable {
+    @Binding var isPresented: Bool
+    var sourceType: ImageSource
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = (sourceType == .camera) ? .camera : .photoLibrary
+        picker.allowsEditing = true
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
+
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: PhotoPickerView
+
+        init(parent: PhotoPickerView) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.editedImage] as? UIImage {
+                uploadImageToFirebase(image: image)
+            }
+            parent.isPresented = false
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            parent.isPresented = false
+        }
+
+        func uploadImageToFirebase(image: UIImage) {
+            guard let imageData = image.jpegData(compressionQuality: 0.8) else { return }
+            let storageRef = Storage.storage().reference().child("journalEntries/\(UUID().uuidString).jpg")
+            
+            storageRef.putData(imageData, metadata: nil) { metadata, error in
+                if let error = error {
+                    print("Failed to upload image: \(error.localizedDescription)")
+                    return
+                }
+                print("Image uploaded successfully.")
+            }
+        }
+    }
+}
+
+
 struct ContentView: View {
     @State private var moodRating: Double = 0.0  // Start slider at 0
     @State private var showHomePage = false      // Flag to control navigation
@@ -40,10 +103,18 @@ struct ContentView: View {
 // Home page after mood check-in
 struct HomePageView: View {
     @Binding var showCamera: Bool
+    @State private var showPhotoLibrary = false
     @State private var showJournalArchive = false
     @State private var showMonthlyRecap = false
-    @State private var journalEntries: [String] = []  // REPLACE WITH ACTUAL JOURNAL ENTRIES SAVED
-    @State private var monthlyRecapEntries: [String] = []  // REPLACE WITH ACTUAL MONTHLY RECAP ENTRIES
+    @State private var journalEntries: [JournalEntry] = []
+    @State private var monthlyRecapEntries: [JournalEntry] = []
+    
+    // Define columns as a property of the view
+    private let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
         VStack {
@@ -78,6 +149,19 @@ struct HomePageView: View {
                         .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
+                
+                Button(action: {
+                                    showPhotoLibrary = true  // Toggle photo library picker
+                                }) {
+                                    Text("Upload from Photo Library")
+                                        .font(.custom("Times New Roman", size: 18))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(width: 250)
+                                        .background(Color.gray.opacity(0.3))
+                                        .cornerRadius(20)
+                                }
 
                 Button(action: {
                     // If journal entries are empty, hide monthly recap view
@@ -112,8 +196,32 @@ struct HomePageView: View {
                         .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
+                
+                if showJournalArchive {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 16) {
+                            ForEach(journalEntries) { entry in
+                                VStack {
+                                    Image(uiImage: entry.photo)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipped()
+                                        .cornerRadius(10)
+                                    
+                                    // Format and show date
+                                    Text(entry.date, style: .date)
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
+                            }
+                        }
+                        .padding()
+                    }
+                }
             }
             .padding(.bottom, 50)  // Space below buttons
+            
             
             // Show Journal Archive screen or placeholder
             if showJournalArchive {
@@ -174,7 +282,7 @@ struct EmptyJournalArchiveView: View {
 }
 
 struct JournalEntriesView: View {
-    var entries: [String]  // Replace with your actual data model
+    var entries: [JournalEntry]
     
     var body: some View {
         VStack {
@@ -183,12 +291,30 @@ struct JournalEntriesView: View {
                 .foregroundColor(.white)
                 .padding()
             
-            // Replace with your dynamic journal entries list
-            List(entries, id: \.self) { entry in
-                Text(entry)
-                    .foregroundColor(.white)
+            ScrollView {
+                LazyVGrid(columns: [
+                    GridItem(.flexible()),
+                    GridItem(.flexible()),
+                    GridItem(.flexible())
+                ], spacing: 16) {
+                    ForEach(entries) { entry in
+                        VStack {
+                            Image(uiImage: entry.photo)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 100, height: 100)
+                                .clipped()
+                                .cornerRadius(10)
+                            
+                            Text(entry.date, style: .date)
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+                .padding()
             }
-            
+
             Button(action: {
                 // Go back to the home page
             }) {
