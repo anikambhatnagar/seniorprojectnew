@@ -1,17 +1,48 @@
 # SeniorProject
 CMSI 4071
 
-Simple User Manual: 
-Prerequisites:
-Xcode: Ensure that Xcode is installed on your macOS machine. You can download it from the Mac App Store or install it via the Apple Developer website.
-Git: Ensure that Git is installed on your machine. You can check this by running git --version in the terminal. If it's not installed, you can install it via Homebrew, or download it directly from git-scm.com.
+# Simple User Manual
 
-Step 1: Clone the Repository
-git clone https://github.com/anikambhatnagar/seniorprojectnew.git
+## Prerequisites
 
-Step 2: Open the Project in Xcode
-Navigate to the folder where you cloned the repository.
-Inside the project folder, locate and open the .xcodeproj or .xcworkspace file
+Before you begin, ensure the following tools are installed on your macOS machine:
+
+### 1. **Xcode**
+- Ensure that **Xcode** is installed on your macOS machine. 
+- You can download it from the [Mac App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12) or install it via the [Apple Developer website](https://developer.apple.com/xcode/).
+
+### 2. **Git**
+- Ensure that **Git** is installed on your machine.
+- To check if Git is installed, open **Terminal** and run the following command:
+  ```bash
+  git --version
+
+# Step 1: Clone the Repository
+
+To get started, you need to clone the repository to your local machine. Follow these steps:
+
+1. **Open Terminal** on your macOS.
+
+2. **Clone the repository** by running the following command:
+   ```bash
+   git clone https://github.com/anikambhatnagar/seniorprojectnew.git
+
+# Step 2: Open the Project in Xcode
+
+Once you've cloned the repository, you need to open the project in **Xcode**. Follow these steps:
+
+1. **Navigate to the folder** where you cloned the repository.
+   - You can do this through **Finder** or by using **Terminal** to `cd` into the repository folder.
+
+2. **Locate the project file**:
+   - If you see a file with the `.xcodeproj` extension, this is your main project file. Open it with Xcode.
+
+3. **Open the file with Xcode**:
+   - Double-click the `.xcodeproj` or `.xcworkspace` file, and it will open the project in **Xcode**.
+
+Once the project is opened in Xcode, you’re ready to start working on it!
+
+---
 
 
 status updates:
