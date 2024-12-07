@@ -8,6 +8,7 @@ import SwiftUI
 import Firebase
 import FirebaseStorage
 import FirebaseCore
+import Charts
 
 struct JournalEntry: Identifiable, Hashable {
     let id = UUID()
@@ -102,8 +103,57 @@ struct ContentView: View {
 
     func saveMoodRating() {
         let defaults = UserDefaults.standard
-        defaults.set(Date(), forKey: "lastMoodRatingDate")
-        defaults.set(moodRating, forKey: "moodRating")
+        let today = Calendar.current.startOfDay(for: Date())
+
+        // Retrieve existing mood data
+        var moodData = defaults.object(forKey: "moodData") as? [[String: Any]] ?? []
+
+        // Check if there's already an entry for today
+        if let index = moodData.firstIndex(where: { ($0["date"] as? Date) == today }) {
+            moodData[index]["rating"] = moodRating // Update today's mood rating
+        } else {
+            // Add a new entry for today
+            moodData.append(["date": today, "rating": moodRating])
+        }
+
+        // Save the updated mood data
+        defaults.set(moodData, forKey: "moodData")
+    }
+
+}
+
+
+
+struct MoodGraphView: View {
+    var data: [(date: Date, rating: Double)]
+
+    var body: some View {
+        Chart {
+            ForEach(data, id: \.date) { entry in
+                LineMark(
+                    x: .value("Date", entry.date, unit: .day),
+                    y: .value("Mood", entry.rating)
+                )
+                .interpolationMethod(.monotone)
+            }
+        }
+        .chartXAxis {
+            AxisMarks(values: .stride(by: .day, count: 5)) { value in
+                AxisGridLine()
+                AxisValueLabel(format: .dateTime.day().month(.abbreviated))
+            }
+        }
+        .chartYAxis {
+            AxisMarks(values: [1, 2, 3, 4, 5]) { value in // Explicit list of values
+                AxisGridLine()
+                AxisValueLabel {
+                    Text("\(Int(value.as(Double.self) ?? 0))") // Convert to Int for display
+                }
+            }
+        }
+        .chartLegend(.hidden)
+        .foregroundColor(.white)
+        .background(Color.gray.opacity(0.2).cornerRadius(10))
     }
 }
 
@@ -123,7 +173,23 @@ struct HomePageView: View {
                 return entryMonth == currentMonth && entryYear == currentYear
             }
         }
+    
+    var pastMonthMoodData: [(date: Date, rating: Double)] {
+            let defaults = UserDefaults.standard
+            let moodData = defaults.object(forKey: "moodData") as? [[String: Any]] ?? []
 
+            let calendar = Calendar.current
+            let today = calendar.startOfDay(for: Date())
+            let thirtyDaysAgo = calendar.date(byAdding: .day, value: -30, to: today)!
+
+            return moodData.compactMap { entry in
+                guard let date = entry["date"] as? Date,
+                      let rating = entry["rating"] as? Double,
+                      date >= thirtyDaysAgo else { return nil }
+                return (date: date, rating: rating)
+            }
+            .sorted { $0.date < $1.date }
+        }
 
     var body: some View {
         
@@ -131,6 +197,7 @@ struct HomePageView: View {
             ZStack {
                 Color.black.edgesIgnoringSafeArea(.all)
                 VStack {
+                    
                     Spacer(minLength: 60)
                     
                     Image("LOGO")
@@ -152,6 +219,10 @@ struct HomePageView: View {
                         .padding(.horizontal, 40)
                         .padding(.bottom, 30)
                     
+                    MoodGraphView(data: pastMonthMoodData)
+                                        .frame(height: 200)
+                                        .padding()
+
                     Spacer()
                     
                     VStack(spacing: 20) {
