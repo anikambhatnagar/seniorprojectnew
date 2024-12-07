@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct MomentoApp: App {
+    init() {
+        // Initialize Firebase
+        FirebaseApp.configure()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView() // Your main view
         }
     }
 }
