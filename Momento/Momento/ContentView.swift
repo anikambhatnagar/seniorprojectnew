@@ -126,90 +126,93 @@ struct HomePageView: View {
 
 
     var body: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            VStack {
-                Spacer(minLength: 60)
-
-                Image("LOGO")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 120, height: 120)
-                    .padding(.top, 20)
-
-                Text("Welcome to Momento")
-                    .font(.custom("Times New Roman", size: 28))
-                    .fontWeight(.medium)
-                    .foregroundColor(.white)
-                    .padding(.bottom, 10)
-
-                Text("Capture your moments, moods, and memories with ease.")
-                    .font(.custom("Times New Roman", size: 16))
-                    .foregroundColor(.gray)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 30)
-
-                Spacer()
-
-                VStack(spacing: 20) {
-                    Button(action: {
-                        showCamera = true
-                    }) {
-                        Text("Capture a new Journal Entry!")
-                            .font(.custom("Times New Roman", size: 18))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(width: 250)
-                            .background(Color.white.opacity(0.8))
-                            .cornerRadius(20)
+        
+        NavigationView {
+            ZStack {
+                Color.black.edgesIgnoringSafeArea(.all)
+                VStack {
+                    Spacer(minLength: 60)
+                    
+                    Image("LOGO")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 120, height: 120)
+                        .padding(.top, 20)
+                    
+                    Text("Welcome to Momento")
+                        .font(.custom("Times New Roman", size: 28))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                        .padding(.bottom, 10)
+                    
+                    Text("Capture your moments, moods, and memories with ease.")
+                        .font(.custom("Times New Roman", size: 16))
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 40)
+                        .padding(.bottom, 30)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 20) {
+                        Button(action: {
+                            showCamera = true
+                        }) {
+                            Text("Capture a new Journal Entry!")
+                                .font(.custom("Times New Roman", size: 18))
+                                .fontWeight(.medium)
+                                .foregroundColor(.black)
+                                .padding()
+                                .frame(width: 250)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(20)
+                        }
+                        
+                        Button(action: {
+                            showPhotoLibrary = true
+                        }) {
+                            Text("Upload from Photo Library")
+                                .font(.custom("Times New Roman", size: 18))
+                                .fontWeight(.medium)
+                                .foregroundColor(.black)
+                                .padding()
+                                .frame(width: 250)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(20)
+                        }
+                        
+                        NavigationLink(destination: JournalArchiveView(entries: journalEntries)) {
+                            Text("Your Journal Archive")
+                                .font(.custom("Times New Roman", size: 18))
+                                .fontWeight(.medium)
+                                .foregroundColor(.black)
+                                .padding()
+                                .frame(width: 250)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(20)
+                        }
+                        
+                        NavigationLink(destination: MonthlyRecapView(entries: currentMonthEntries)) {
+                            Text("Your Monthly Recap")
+                                .font(.custom("Times New Roman", size: 18))
+                                .fontWeight(.medium)
+                                .foregroundColor(.black)
+                                .padding()
+                                .frame(width: 250)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(20)
+                        }
                     }
-
-                    Button(action: {
-                        showPhotoLibrary = true
-                    }) {
-                        Text("Upload from Photo Library")
-                            .font(.custom("Times New Roman", size: 18))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(width: 250)
-                            .background(Color.white.opacity(0.8))
-                            .cornerRadius(20)
-                    }
-
-                    NavigationLink(destination: JournalArchiveView(entries: journalEntries)) {
-                        Text("Your Journal Archive")
-                            .font(.custom("Times New Roman", size: 18))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(width: 250)
-                            .background(Color.white.opacity(0.8))
-                            .cornerRadius(20)
-                    }
-
-                    NavigationLink(destination: MonthlyRecapView(entries: currentMonthEntries)) {
-                        Text("Your Monthly Recap")
-                            .font(.custom("Times New Roman", size: 18))
-                            .fontWeight(.medium)
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(width: 250)
-                            .background(Color.white.opacity(0.8))
-                            .cornerRadius(20)
-                    }
+                    .padding(.bottom, 50)
                 }
-                .padding(.bottom, 50)
-            }
-            .background(Color.black.edgesIgnoringSafeArea(.all))
-            .sheet(isPresented: $showPhotoLibrary) {
-                PhotoPickerView(
-                    isPresented: $showPhotoLibrary,
-                    sourceType: .photoLibrary,
-                    journalEntries: $journalEntries
-                )
+                .background(Color.black.edgesIgnoringSafeArea(.all))
+                .sheet(isPresented: $showPhotoLibrary) {
+                    PhotoPickerView(
+                        isPresented: $showPhotoLibrary,
+                        sourceType: .photoLibrary,
+                        journalEntries: $journalEntries
+                    )
+                }
             }
         }
     }
