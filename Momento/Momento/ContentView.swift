@@ -126,7 +126,8 @@ struct HomePageView: View {
 
 
     var body: some View {
-        NavigationView {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer(minLength: 60)
 
@@ -247,37 +248,40 @@ struct JournalArchiveView: View {
     var entries: [JournalEntry]
 
     var body: some View {
-        ScrollView {
-            VStack {
-                Text("Journal Archive")
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .padding()
-
-                if entries.isEmpty {
-                    EmptyJournalArchiveView()
-                } else {
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 16) {
-                        ForEach(entries) { entry in
-                            VStack {
-                                Image(uiImage: entry.photo)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100)
-                                    .clipped()
-                                    .cornerRadius(10)
-
-                                Text(entry.date, style: .date)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
+        ZStack {
+                    Color.black.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack {
+                    Text("Journal Archive")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .padding()
+                    
+                    if entries.isEmpty {
+                        EmptyJournalArchiveView()
+                    } else {
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 16) {
+                            ForEach(entries) { entry in
+                                VStack {
+                                    Image(uiImage: entry.photo)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipped()
+                                        .cornerRadius(10)
+                                    
+                                    Text(entry.date, style: .date)
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
             }
         }
@@ -369,42 +373,45 @@ struct MonthlyRecapView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                Text("Monthly Recap")
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .padding()
-
-                ForEach(sortedMonths, id: \.self) { month in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(month) // Month and year as section title
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding(.horizontal)
-                            .padding(.top, 10)
-
-                        LazyVGrid(columns: [
-                            GridItem(.flexible()),
-                            GridItem(.flexible()),
-                            GridItem(.flexible())
-                        ], spacing: 16) {
-                            ForEach(groupedEntries[month] ?? [], id: \.id) { entry in
-                                VStack {
-                                    Image(uiImage: entry.photo)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(width: 100, height: 100)
-                                        .clipped()
-                                        .cornerRadius(10)
-
-                                    Text(entry.date, style: .date)
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
+        ZStack {
+                    Color.black.edgesIgnoringSafeArea(.all)
+            ScrollView {
+                VStack(alignment: .leading) {
+                    Text("Monthly Recap")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .padding()
+                    
+                    ForEach(sortedMonths, id: \.self) { month in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(month) // Month and year as section title
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding(.horizontal)
+                                .padding(.top, 10)
+                            
+                            LazyVGrid(columns: [
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                                GridItem(.flexible())
+                            ], spacing: 16) {
+                                ForEach(groupedEntries[month] ?? [], id: \.id) { entry in
+                                    VStack {
+                                        Image(uiImage: entry.photo)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipped()
+                                            .cornerRadius(10)
+                                        
+                                        Text(entry.date, style: .date)
+                                            .font(.caption)
+                                            .foregroundColor(.gray)
+                                    }
                                 }
                             }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
                 }
             }
