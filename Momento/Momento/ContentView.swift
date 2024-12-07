@@ -111,6 +111,7 @@ struct ContentView: View {
 
 // Home page after mood check-in
 struct HomePageView: View {
+    
     @Binding var showCamera: Bool
     @State private var showPhotoLibrary = false
     @State private var showJournalArchive = false
@@ -141,6 +142,15 @@ struct HomePageView: View {
         VStack {
             Spacer(minLength: 60)
 
+<<<<<<< HEAD
+=======
+            Image("LOGO")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 120, height: 120)
+                .padding(.top, 20)
+            // Title Text
+>>>>>>> 4ce398e36a658e667ea1faf8b5f880c78b7f7f38
             Text("Welcome to Momento")
                 .font(.custom("Times New Roman", size: 28))
                 .fontWeight(.medium)
@@ -149,7 +159,7 @@ struct HomePageView: View {
 
             Text("Capture your moments, moods, and memories with ease.")
                 .font(.custom("Times New Roman", size: 16))
-                .foregroundColor(.gray)
+                .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .padding(.bottom, 30)
@@ -164,12 +174,28 @@ struct HomePageView: View {
                     Text("Capture a new Journal Entry!")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
+                        .background(Color.white.opacity(0.8))
                         .cornerRadius(20)
                 }
+<<<<<<< HEAD
+=======
+                
+                Button(action: {
+                                    showPhotoLibrary = true  // Toggle photo library picker
+                                }) {
+                                    Text("Upload from Photo Library")
+                                        .font(.custom("Times New Roman", size: 18))
+                                        .fontWeight(.medium)
+                                        .foregroundColor(.black)
+                                        .padding()
+                                        .frame(width: 250)
+                                        .background(Color.white.opacity(0.8))
+                                        .cornerRadius(20)
+                                }
+>>>>>>> 4ce398e36a658e667ea1faf8b5f880c78b7f7f38
 
                 // Upload photo from library button
                 Button(action: {
@@ -192,10 +218,10 @@ struct HomePageView: View {
                     Text("Your Journal Archive")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
+                        .background(Color.white.opacity(0.8))
                         .cornerRadius(20)
                 }
 
