@@ -339,40 +339,73 @@ struct JournalEntriesView: View {
 
 
 struct MonthlyRecapView: View {
-    var entries: [JournalEntry]
+    var entries: [JournalEntry] // Pass all journal entries
+
+    // Group journal entries by month and year
+    var groupedEntries: [String: [JournalEntry]] {
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy" // Example: "December 2024"
+        
+        let grouped = Dictionary(grouping: entries) { entry -> String in
+            let dateComponents = calendar.dateComponents([.year, .month], from: entry.date)
+            let date = calendar.date(from: dateComponents) ?? Date()
+            return formatter.string(from: date)
+        }
+        
+        return grouped
+    }
+
+    // Sorted keys for the sections
+    var sortedMonths: [String] {
+        groupedEntries.keys.sorted { lhs, rhs in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMMM yyyy"
+            guard let lhsDate = formatter.date(from: lhs), let rhsDate = formatter.date(from: rhs) else {
+                return false
+            }
+            return lhsDate > rhsDate // Sort in descending order
+        }
+    }
 
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(alignment: .leading) {
                 Text("Monthly Recap")
                     .font(.title)
                     .foregroundColor(.white)
                     .padding()
 
-                if entries.isEmpty {
-                    EmptyMonthlyRecapView()
-                } else {
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 16) {
-                        ForEach(entries) { entry in
-                            VStack {
-                                Image(uiImage: entry.photo)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 100, height: 100)
-                                    .clipped()
-                                    .cornerRadius(10)
+                ForEach(sortedMonths, id: \.self) { month in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(month) // Month and year as section title
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding(.horizontal)
+                            .padding(.top, 10)
 
-                                Text(entry.date, style: .date)
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 16) {
+                            ForEach(groupedEntries[month] ?? [], id: \.id) { entry in
+                                VStack {
+                                    Image(uiImage: entry.photo)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipped()
+                                        .cornerRadius(10)
+
+                                    Text(entry.date, style: .date)
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                }
                             }
                         }
+                        .padding(.horizontal)
                     }
-                    .padding()
                 }
             }
         }
