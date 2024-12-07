@@ -79,75 +79,63 @@ struct PhotoPickerView: UIViewControllerRepresentable {
     }
 }
 
-
-
 struct ContentView: View {
-    @State private var moodRating: Double = 0.0  // Start slider at 0
-    @State private var showHomePage = false      // Flag to control navigation
-    @State private var showCamera = false        // Flag to control camera view
+    @State private var moodRating: Double = 0.0
+    @State private var showHomePage = false
+    @State private var showCamera = false
+    @State private var journalEntries: [JournalEntry] = [] // Shared state for journal entries
 
     var body: some View {
         if showCamera {
             CameraView(isPresented: $showCamera)
         } else if showHomePage {
-            HomePageView(showCamera: $showCamera)
+            HomePageView(showCamera: $showCamera, journalEntries: $journalEntries)
         } else {
             MoodCheckInView(moodRating: $moodRating, onComplete: {
                 saveMoodRating()
                 withAnimation {
-                    showHomePage = true  // Automatically show home page after slider interaction
+                    showHomePage = true
                 }
             })
         }
     }
 
-    // Function to save the mood rating
     func saveMoodRating() {
         let defaults = UserDefaults.standard
         defaults.set(Date(), forKey: "lastMoodRatingDate")
-        defaults.set(moodRating, forKey: "moodRating")  // Save the rating
+        defaults.set(moodRating, forKey: "moodRating")
     }
 }
 
-// Home page after mood check-in
 struct HomePageView: View {
-    
     @Binding var showCamera: Bool
+    @Binding var journalEntries: [JournalEntry] // Binding to shared state
     @State private var showPhotoLibrary = false
     @State private var showJournalArchive = false
     @State private var showMonthlyRecap = false
-    @State private var journalEntries: [JournalEntry] = [] // Stores journal entries
-    @State private var monthlyRecapEntries: [JournalEntry] = []
 
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-    
     var currentMonthEntries: [JournalEntry] {
-            let calendar = Calendar.current
-            let currentMonth = calendar.component(.month, from: Date())
-            let currentYear = calendar.component(.year, from: Date())
+        let calendar = Calendar.current
+        let currentMonth = calendar.component(.month, from: Date())
+        let currentYear = calendar.component(.year, from: Date())
 
-            return journalEntries.filter { entry in
-                let entryMonth = calendar.component(.month, from: entry.date)
-                let entryYear = calendar.component(.year, from: entry.date)
-                return entryMonth == currentMonth && entryYear == currentYear
-            }
+        return journalEntries.filter { entry in
+            let entryMonth = calendar.component(.month, from: entry.date)
+            let entryYear = calendar.component(.year, from: entry.date)
+            return entryMonth == currentMonth && entryYear == currentYear
         }
-
+    }
 
     var body: some View {
         VStack {
             Spacer(minLength: 60)
-
+            
             Image("LOGO")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 120, height: 120)
                 .padding(.top, 20)
-            // Title Text
+
             Text("Welcome to Momento")
                 .font(.custom("Times New Roman", size: 28))
                 .fontWeight(.medium)
@@ -156,7 +144,7 @@ struct HomePageView: View {
 
             Text("Capture your moments, moods, and memories with ease.")
                 .font(.custom("Times New Roman", size: 16))
-                .foregroundColor(.white)
+                .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
                 .padding(.bottom, 30)
@@ -164,66 +152,60 @@ struct HomePageView: View {
             Spacer()
 
             VStack(spacing: 20) {
-                // Capture new photo button
                 Button(action: {
                     showCamera = true
                 }) {
                     Text("Capture a new Journal Entry!")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.white.opacity(0.8))
+                        .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
 
-
-                // Upload photo from library button
                 Button(action: {
                     showPhotoLibrary = true
                 }) {
                     Text("Upload from Photo Library")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.white.opacity(0.8))
+                        .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
 
-                // Journal archive button
                 Button(action: {
                     showJournalArchive.toggle()
                 }) {
                     Text("Your Journal Archive")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.white.opacity(0.8))
+                        .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
 
-                // Monthly recap button
                 Button(action: {
                     showMonthlyRecap.toggle()
                 }) {
                     Text("Your Monthly Recap")
                         .font(.custom("Times New Roman", size: 18))
                         .fontWeight(.medium)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
                         .frame(width: 250)
-                        .background(Color.white.opacity(0.8))
+                        .background(Color.gray.opacity(0.3))
                         .cornerRadius(20)
                 }
             }
             .padding(.bottom, 50)
 
-            // Show Journal Archive
             if showJournalArchive {
                 if journalEntries.isEmpty {
                     EmptyJournalArchiveView()
@@ -232,7 +214,6 @@ struct HomePageView: View {
                 }
             }
 
-            // Show Monthly Recap
             if showMonthlyRecap {
                 if currentMonthEntries.isEmpty {
                     EmptyMonthlyRecapView()
@@ -240,7 +221,6 @@ struct HomePageView: View {
                     MonthlyRecapView(entries: currentMonthEntries)
                 }
             }
-
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .sheet(isPresented: $showPhotoLibrary) {
@@ -252,7 +232,6 @@ struct HomePageView: View {
         }
     }
 }
-
 
 
 struct EmptyJournalArchiveView: View {
