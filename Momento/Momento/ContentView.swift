@@ -109,130 +109,110 @@ struct ContentView: View {
 
 struct HomePageView: View {
     @Binding var showCamera: Bool
-    @Binding var journalEntries: [JournalEntry] // Binding to shared state
+    @Binding var journalEntries: [JournalEntry]
     @State private var showPhotoLibrary = false
-    @State private var showJournalArchive = false
-    @State private var showMonthlyRecap = false
-
+    
     var currentMonthEntries: [JournalEntry] {
-        let calendar = Calendar.current
-        let currentMonth = calendar.component(.month, from: Date())
-        let currentYear = calendar.component(.year, from: Date())
+            let calendar = Calendar.current
+            let currentMonth = calendar.component(.month, from: Date())
+            let currentYear = calendar.component(.year, from: Date())
 
-        return journalEntries.filter { entry in
-            let entryMonth = calendar.component(.month, from: entry.date)
-            let entryYear = calendar.component(.year, from: entry.date)
-            return entryMonth == currentMonth && entryYear == currentYear
+            return journalEntries.filter { entry in
+                let entryMonth = calendar.component(.month, from: entry.date)
+                let entryYear = calendar.component(.year, from: entry.date)
+                return entryMonth == currentMonth && entryYear == currentYear
+            }
         }
-    }
+
 
     var body: some View {
-        VStack {
-            Spacer(minLength: 60)
-            
-            Image("LOGO")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 120, height: 120)
-                .padding(.top, 20)
+        NavigationView {
+            VStack {
+                Spacer(minLength: 60)
 
-            Text("Welcome to Momento")
-                .font(.custom("Times New Roman", size: 28))
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .padding(.bottom, 10)
+                Image("LOGO")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .padding(.top, 20)
 
-            Text("Capture your moments, moods, and memories with ease.")
-                .font(.custom("Times New Roman", size: 16))
-                .foregroundColor(.gray)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-                .padding(.bottom, 30)
+                Text("Welcome to Momento")
+                    .font(.custom("Times New Roman", size: 28))
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 10)
 
-            Spacer()
+                Text("Capture your moments, moods, and memories with ease.")
+                    .font(.custom("Times New Roman", size: 16))
+                    .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                    .padding(.bottom, 30)
 
-            VStack(spacing: 20) {
-                Button(action: {
-                    showCamera = true
-                }) {
-                    Text("Capture a new Journal Entry!")
-                        .font(.custom("Times New Roman", size: 18))
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
-                        .cornerRadius(20)
+                Spacer()
+
+                VStack(spacing: 20) {
+                    Button(action: {
+                        showCamera = true
+                    }) {
+                        Text("Capture a new Journal Entry!")
+                            .font(.custom("Times New Roman", size: 18))
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color.white.opacity(0.8))
+                            .cornerRadius(20)
+                    }
+
+                    Button(action: {
+                        showPhotoLibrary = true
+                    }) {
+                        Text("Upload from Photo Library")
+                            .font(.custom("Times New Roman", size: 18))
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color.white.opacity(0.8))
+                            .cornerRadius(20)
+                    }
+
+                    NavigationLink(destination: JournalArchiveView(entries: journalEntries)) {
+                        Text("Your Journal Archive")
+                            .font(.custom("Times New Roman", size: 18))
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color.white.opacity(0.8))
+                            .cornerRadius(20)
+                    }
+
+                    NavigationLink(destination: MonthlyRecapView(entries: currentMonthEntries)) {
+                        Text("Your Monthly Recap")
+                            .font(.custom("Times New Roman", size: 18))
+                            .fontWeight(.medium)
+                            .foregroundColor(.black)
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color.white.opacity(0.8))
+                            .cornerRadius(20)
+                    }
                 }
-
-                Button(action: {
-                    showPhotoLibrary = true
-                }) {
-                    Text("Upload from Photo Library")
-                        .font(.custom("Times New Roman", size: 18))
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
-                        .cornerRadius(20)
-                }
-
-                Button(action: {
-                    showJournalArchive.toggle()
-                }) {
-                    Text("Your Journal Archive")
-                        .font(.custom("Times New Roman", size: 18))
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
-                        .cornerRadius(20)
-                }
-
-                Button(action: {
-                    showMonthlyRecap.toggle()
-                }) {
-                    Text("Your Monthly Recap")
-                        .font(.custom("Times New Roman", size: 18))
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 250)
-                        .background(Color.gray.opacity(0.3))
-                        .cornerRadius(20)
-                }
+                .padding(.bottom, 50)
             }
-            .padding(.bottom, 50)
-
-            if showJournalArchive {
-                if journalEntries.isEmpty {
-                    EmptyJournalArchiveView()
-                } else {
-                    JournalEntriesView(entries: journalEntries)
-                }
+            .background(Color.black.edgesIgnoringSafeArea(.all))
+            .sheet(isPresented: $showPhotoLibrary) {
+                PhotoPickerView(
+                    isPresented: $showPhotoLibrary,
+                    sourceType: .photoLibrary,
+                    journalEntries: $journalEntries
+                )
             }
-
-            if showMonthlyRecap {
-                if currentMonthEntries.isEmpty {
-                    EmptyMonthlyRecapView()
-                } else {
-                    MonthlyRecapView(entries: currentMonthEntries)
-                }
-            }
-        }
-        .background(Color.black.edgesIgnoringSafeArea(.all))
-        .sheet(isPresented: $showPhotoLibrary) {
-            PhotoPickerView(
-                isPresented: $showPhotoLibrary,
-                sourceType: .photoLibrary,
-                journalEntries: $journalEntries
-            )
         }
     }
 }
-
 
 struct EmptyJournalArchiveView: View {
     var body: some View {
@@ -262,6 +242,49 @@ struct EmptyMonthlyRecapView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
+
+struct JournalArchiveView: View {
+    var entries: [JournalEntry]
+
+    var body: some View {
+        ScrollView {
+            VStack {
+                Text("Journal Archive")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .padding()
+
+                if entries.isEmpty {
+                    EmptyJournalArchiveView()
+                } else {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
+                        ForEach(entries) { entry in
+                            VStack {
+                                Image(uiImage: entry.photo)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100)
+                                    .clipped()
+                                    .cornerRadius(10)
+
+                                Text(entry.date, style: .date)
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
+        }
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
 
 
 struct JournalEntriesView: View {
@@ -312,27 +335,28 @@ struct JournalEntriesView: View {
     }
 }
 
-struct JournalArchiveView: View {
-    var entries: [JournalEntry]
 
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+
+
+struct MonthlyRecapView: View {
+    var entries: [JournalEntry]
 
     var body: some View {
         ScrollView {
             VStack {
-                Text("Journal Archive")
+                Text("Monthly Recap")
                     .font(.title)
                     .foregroundColor(.white)
                     .padding()
 
                 if entries.isEmpty {
-                    EmptyJournalArchiveView()
+                    EmptyMonthlyRecapView()
                 } else {
-                    LazyVGrid(columns: columns, spacing: 16) {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible()),
+                        GridItem(.flexible()),
+                        GridItem(.flexible())
+                    ], spacing: 16) {
                         ForEach(entries) { entry in
                             VStack {
                                 Image(uiImage: entry.photo)
@@ -356,47 +380,6 @@ struct JournalArchiveView: View {
     }
 }
 
-
-
-struct MonthlyRecapView: View {
-    var entries: [JournalEntry] // Pass the filtered journal entries for the month
-
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
-
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                Text("Your Monthly Recap")
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .padding()
-
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(entries) { entry in
-                        VStack {
-                            Image(uiImage: entry.photo)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 100, height: 100)
-                                .clipped()
-                                .cornerRadius(10)
-
-                            Text(entry.date, style: .date)
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .padding()
-            }
-        }
-        .background(Color.black.edgesIgnoringSafeArea(.all))
-    }
-}
 
 
 // Camera view to capture the photo
