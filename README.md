@@ -40,7 +40,9 @@ Once you've cloned the repository, you need to open the project in **Xcode**. Fo
 3. **Open the file with Xcode**:
    - Double-click the `.xcodeproj` or `.xcworkspace` file, and it will open the project in **Xcode**.
 
-Once the project is opened in Xcode, you’re ready to start working on it!
+4. **Select the Target Device**:
+   - In the top toolbar, you’ll see a dropdown next to the Play (Run) button. This allows you to select the device or simulator to run your app on.
+
 
 ---
 
@@ -53,6 +55,6 @@ This week we solidified the features we want in our app, as well as how we want 
 week 11:
 We've been working on implementing the camera functionality for Momento, focusing on enabling smooth photo capture for daily entries. Integration with iOS photo suggestions from the Camera Roll is in progress to allow users to document moments with ease. Progress has been steady, with continued testing to ensure a seamless photo upload experience within the app.
 
-week 13:
+week 13: ABCDR Presentation
 
-week 15:
+week 15: Working on the UI, expanding functionality for uploading content, integrating weather API leading to statistics detailing the weather's effect on mood, mood tracker graph adjustments, etc.. Preparing for work/feature ideation for next semester to continue refining the app.
