@@ -136,6 +136,15 @@ struct MoodGraphView: View {
                 )
                 .interpolationMethod(.monotone)
             }
+
+            ForEach(data, id: \.date) { entry in
+                PointMark(
+                    x: .value("Date", entry.date, unit: .day),
+                    y: .value("Mood", entry.rating)
+                )
+                .foregroundStyle(Color.red)
+                .symbolSize(30)
+            }
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 5)) { value in
@@ -144,18 +153,29 @@ struct MoodGraphView: View {
             }
         }
         .chartYAxis {
-            AxisMarks(values: [1, 2, 3, 4, 5]) { value in // Explicit list of values
+            AxisMarks(values: [1, 2, 3, 4, 5]) { value in
                 AxisGridLine()
                 AxisValueLabel {
                     Text("\(Int(value.as(Double.self) ?? 0))") // Convert to Int for display
                 }
             }
         }
-        .chartLegend(.hidden)
+        .chartYAxisLabel {
+            Text("Mood Rating")
+                .foregroundColor(.white)
+        }
+        .chartLegend(.automatic)
         .foregroundColor(.white)
-        .background(Color.gray.opacity(0.2).cornerRadius(10))
+        .background(Color.gray.opacity(0.3).cornerRadius(10))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.blue, lineWidth: 2)
+        )
+        .padding()
     }
 }
+
+
 
 struct HomePageView: View {
     @Binding var showCamera: Bool
@@ -214,7 +234,7 @@ struct HomePageView: View {
                     
                     Text("Capture your moments, moods, and memories with ease.")
                         .font(.custom("Times New Roman", size: 16))
-                        .foregroundColor(.gray)
+                        .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .padding(.bottom, 30)
@@ -229,8 +249,8 @@ struct HomePageView: View {
                         Button(action: {
                             showCamera = true
                         }) {
-                            Text("Capture a new Journal Entry!")
-                                .font(.custom("Times New Roman", size: 18))
+                            Text("Capture new Journal Entry!")
+                                .font(.custom("Times New Roman", size: 17))
                                 .fontWeight(.medium)
                                 .foregroundColor(.black)
                                 .padding()
@@ -301,6 +321,35 @@ struct EmptyJournalArchiveView: View {
             Spacer()
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
+struct JournalSlideshowView: View {
+    var journals: [String] // Array of journal entries (could be titles, content, or full objects)
+
+    @State private var selectedIndex = 0
+
+    var body: some View {
+        VStack {
+            TabView(selection: $selectedIndex) {
+                ForEach(0..<journals.count, id: \.self) { index in
+                    Text(journals[index])
+                        .font(.body)
+                        .padding()
+                        .background(Color.gray.opacity(0.1))
+                        .cornerRadius(10)
+                        .tag(index)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+            .padding()
+
+            Text("Journal \(selectedIndex + 1) of \(journals.count)")
+                .font(.headline)
+                .padding()
+        }
+        .navigationTitle("Journal Slideshow")
+        .background(Color.white)
     }
 }
 
@@ -405,7 +454,7 @@ struct JournalEntriesView: View {
                 Text("Go Back")
                     .foregroundColor(.white)
                     .padding()
-                    .background(Color.gray.opacity(0.3))
+                    .background(Color.gray.opacity(0.4))
                     .cornerRadius(20)
             }
         }
