@@ -9,12 +9,92 @@ import Firebase
 import FirebaseStorage
 import FirebaseCore
 import Charts
+import Foundation
 
 struct JournalEntry: Identifiable, Hashable {
     let id = UUID()
     let date: Date
     let photo: UIImage
 }
+
+struct Weather: Codable {
+    let current_weather: CurrentWeather
+}
+
+struct CurrentWeather: Codable {
+    let temperature: Double
+    let weathercode: Int
+}
+
+class WeatherFetcher: ObservableObject {
+    @Published var temperature: String = ""
+    @Published var condition: String = ""
+    
+    let latitude: Double = 33.9960
+    let longitude: Double = -118.39306
+    
+    func fetchWeather() {
+        let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(latitude)&longitude=\(longitude)&current_weather=true"
+        
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            return
+        }
+        
+        // Debugging: Print the URL
+        print("Requesting weather data from: \(urlString)")
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error fetching weather data: \(error)")
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+                print("HTTP error: \(httpResponse.statusCode)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            if let rawResponse = String(data: data, encoding: .utf8) {
+                print("Raw Response: \(rawResponse)")
+            }
+            
+            do {
+                let weatherResponse = try JSONDecoder().decode(Weather.self, from: data)
+                DispatchQueue.main.async {
+                    self.temperature = String(format: "%.0f", weatherResponse.current_weather.temperature)
+                    self.condition = self.getWeatherCondition(fromCode: weatherResponse.current_weather.weathercode)
+                    print("Fetched weather: \(self.temperature)°C, \(self.condition)")
+                }
+            } catch {
+                print("Error decoding weather data: \(error)")
+            }
+        }.resume()
+    }
+    
+    func getWeatherCondition(fromCode code: Int) -> String {
+        switch code {
+        case 0: return "Clear"
+        case 1, 2, 3: return "Partly Cloudy"
+        case 45, 48: return "Fog"
+        case 51...53: return "Light Rain"
+        case 61...63: return "Moderate Rain"
+        case 71...73: return "Heavy Rain"
+        case 80, 81: return "Showers"
+        case 95, 96: return "Thunderstorm"
+        case 99: return "Severe Thunderstorm"
+        default: return "Unknown"
+        }
+    }
+    
+}
+
+
 
 enum ImageSource {
     case camera
@@ -127,53 +207,68 @@ struct ContentView: View {
 struct MoodGraphView: View {
     var data: [(date: Date, rating: Double)]
 
-    var body: some View {
-        Chart {
-            ForEach(data, id: \.date) { entry in
-                LineMark(
-                    x: .value("Date", entry.date, unit: .day),
-                    y: .value("Mood", entry.rating)
-                )
-                .interpolationMethod(.monotone)
-            }
+    var averageMood: Double {
+        let totalMood = data.reduce(0) { $0 + $1.rating }
+        return totalMood / Double(data.count)
+    }
 
-            ForEach(data, id: \.date) { entry in
-                PointMark(
-                    x: .value("Date", entry.date, unit: .day),
-                    y: .value("Mood", entry.rating)
-                )
-                .foregroundStyle(Color.red)
-                .symbolSize(30)
-            }
-        }
-        .chartXAxis {
-            AxisMarks(values: .stride(by: .day, count: 5)) { value in
-                AxisGridLine()
-                AxisValueLabel(format: .dateTime.day().month(.abbreviated))
-            }
-        }
-        .chartYAxis {
-            AxisMarks(values: [1, 2, 3, 4, 5]) { value in
-                AxisGridLine()
-                AxisValueLabel {
-                    Text("\(Int(value.as(Double.self) ?? 0))") // Convert to Int for display
+    var body: some View {
+        VStack {
+            // Display average mood rating
+            Text("Average Mood Rating: \(String(format: "%.1f", averageMood))")
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.top, 10)
+
+            // Chart for mood data
+            Chart {
+                ForEach(data, id: \.date) { entry in
+                    LineMark(
+                        x: .value("Date", entry.date, unit: .day),
+                        y: .value("Mood", entry.rating)
+                    )
+                    .interpolationMethod(.monotone)
+                }
+
+                ForEach(data, id: \.date) { entry in
+                    PointMark(
+                        x: .value("Date", entry.date, unit: .day),
+                        y: .value("Mood", entry.rating)
+                    )
+                    .foregroundStyle(Color.red)
+                    .symbolSize(30)
                 }
             }
+            .chartXAxis {
+                AxisMarks(values: .stride(by: .day, count: 5)) { value in
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.day().month(.abbreviated))
+                }
+            }
+            .chartYAxis {
+                AxisMarks(values: [1, 2, 3, 4, 5]) { value in
+                    AxisGridLine()
+                    AxisValueLabel {
+                        Text("\(Int(value.as(Double.self) ?? 0))") // Convert to Int for display
+                    }
+                }
+            }
+            .chartYAxisLabel {
+                Text("Mood Rating")
+                    .foregroundColor(.white)
+            }
+            .chartLegend(.automatic)
+            .foregroundColor(.white)
+            .background(Color.gray.opacity(0.3).cornerRadius(10))
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.blue, lineWidth: 2)
+            )
+            .padding()
         }
-        .chartYAxisLabel {
-            Text("Mood Rating")
-                .foregroundColor(.white)
-        }
-        .chartLegend(.automatic)
-        .foregroundColor(.white)
-        .background(Color.gray.opacity(0.3).cornerRadius(10))
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.blue, lineWidth: 2)
-        )
-        .padding()
     }
 }
+
 
 
 
@@ -601,6 +696,8 @@ struct MoodCheckInView: View {
     @Binding var moodRating: Double
     var onComplete: () -> Void
     
+    @ObservedObject var weatherFetcher = WeatherFetcher()  // Add the WeatherFetcher to get weather data
+    
     let range: [Double] = Array(1...5).map { Double($0) }  // Array of values from 1 to 5
     
     var body: some View {
@@ -616,9 +713,8 @@ struct MoodCheckInView: View {
                 Text("Rate your mood:")
                     .foregroundColor(.gray)
                 
-                // Slider with custom labels
+                // Mood slider
                 VStack {
-                    
                     Slider(value: $moodRating, in: 1...5, step: 1, onEditingChanged: { editing in
                         if !editing {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -641,9 +737,31 @@ struct MoodCheckInView: View {
                 .padding(.bottom, 30)
             }
             
+            // Weather Information Display
+            if !weatherFetcher.temperature.isEmpty {
+                VStack {
+                    Text("Current Temperature: \(weatherFetcher.temperature)°C")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
+                    
+                    Text("Weather Condition: \(weatherFetcher.condition)")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(.top, 5)
+                }
+            } else {
+                Text("Loading weather...")
+                    .foregroundColor(.white)
+                    .padding(.top, 20)
+            }
+            
             Spacer()
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .onAppear {
+            weatherFetcher.fetchWeather()  // Fetch the weather when the view appears
+        }
     }
 }
 
