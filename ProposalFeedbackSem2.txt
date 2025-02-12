@@ -1,0 +1,32 @@
+CMSI 4072 Spring 2025
+Project Proposal Feedback
+Project: Momento
+=========================
+Proposal Document [2 points]:
+   Oh, this is very nice!  I like that you are starting with a cover letter.
+   The organization of the document is VERY professional and hits all the
+   right notes for a project proposal.  The section approach is a great way
+   to organize the information.  VERY well done!
+
+Proposal Presentation [3 points]:
+   The presentation is nice.  I like the minimalist approach with just B&W
+   on the slides.  Even still, it could be dressed up a bit with some nice
+   graphics, especially since this is a visual journaling application.  You
+   could put a picture or two that shows the emotional link between the
+   different emotions your AI might reflect, for example.
+
+   The other thing is you don't really highlight the daily quote as the new
+   part for this semester.  I see it in there with the other components, but
+   you don't actually say "this is the new part" on that slide.  You DID say
+   that out loud in the presentation, though, so OK...
+
+   One thing to remember, TALK LOUDER.  For you two who are naturally kinda
+   quiet, it will probably seem like you're yelling, but believe me, it won't
+   seem that way to the audience, especially in a room this large.  Give it a
+   try next time!
+
+Summary:
+--------
+Total:  5% out of 5% for this deliverable.
+
+Nice job overall!  REALLY good job on the document.  Great start so keep it up.
