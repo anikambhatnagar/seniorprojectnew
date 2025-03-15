@@ -1,0 +1,41 @@
+
+Evaluation and Feedback
+CMSI 4072 project ~ Spring 2025
+Evaluation for homework02
+===============================
+
+5-1 component-based vs service-oriented             3 of  5 points
+5-2 most appropriate architecture for tictactoe     5 of  5 points
+5-4 internet chess appropriate architecture         4 of  5 points
+5-6 database for ClassyDraw                         5 of  5 points
+5-8 state machine diagram for floats                9 of 10 points
+6-1 compare/contrast ClassyDraw subclasses         10 of 10 points
+6-2 inheritance diagram from 6-1                    9 of 10 points
+
+
+Total possible score: 50 points
+
+EVALUATION
+============================================================================
+Your score: 45 out of 50 = 90.0% which is an A-minus
+
+Comments:
+---------
+
+problem 5-1, you got component-based, but where is server-based to contrast?
+
+problem 5-2, you have made your case for the three architectures you have
+   listed, but all you really need for this is a simple monolithic architecture.
+
+problem 5-4, I think you are over-thinking this one.  This is a server-based
+   architecture problem since all that is needed is two player clients and a
+   server to keep track of game mechanics.
+
+problem 5-8, what about floating point exponents like 1.23e-1.5?
+
+problem 6-2, you have the wrong problem ~ you should have drawn a diagram for
+   the inheritance of ClassyDraw.  However, what you wrote is basically right
+   for that wrong problem...  :D
+
+Excellent work ~ keep it up!
+
