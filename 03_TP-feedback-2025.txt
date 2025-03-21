@@ -1,0 +1,50 @@
+
+Continuing Group Project
+Documentation Feedback ~ Deliverable #3
+Initial Test Procedure Document
+CMSI 4072 Spring 2025
+=======================================
+
+LIST OF REQUIREMENTS/ACCEPTANCE CRITERIA:
+   well, sorta.... based on the fact that your requirements are so skimpy,
+   this section is also inadequate to the task you have set yourselves.
+
+SOFTWARE START-UP PROCEDURE:
+   OK, this is good.  Nothing to add for this.  I assume your installation
+   procedure is in the README on your repository....
+
+TEST STEP FOR EACH REQUIREMENT/CRITERIA:
+   This is the proper way to write these, but because your requirements are
+   so few, you will need to add a bunch more steps when you update that SRS
+   to include the appropriate requirement count.  Remember that each of the
+   requirements must be tested and proved to work.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Requirements/Criteria List          1/2
+   Software start-up procedure         2/2
+   Test step ea. requirement/crit.     5/6
+                                     =====
+   Subtotal                           8/10
+   ------------------------------------------------------
+   Total Percentage:   8/10 = 80% which is a B-minus on this deliverable
+
+
+
+----------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+----------------------------------------------------------------------------
+
+Documentation Feedback ~ Deliverable #5
+Test Procedure Document Complete
+============================================
+
+OVERALL ASSESSMENT:
+           Category                                Points
+   Comments from first submission incorporated       8/8
+   Spelling and Grammar in document acceptable       2/2
+                                                   =====
+   Subtotal                                        10/10
+   ------------------------------------------------------
+   Total Percentage:   10/10 = 100% which is an A-plus

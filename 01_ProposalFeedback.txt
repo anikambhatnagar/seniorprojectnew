@@ -1,6 +1,6 @@
 CMSI 4072 Spring 2025
 Project Proposal Feedback
-Project: Momento
+Project:
 =========================
 Proposal Document [2 points]:
    Oh, this is very nice!  I like that you are starting with a cover letter.

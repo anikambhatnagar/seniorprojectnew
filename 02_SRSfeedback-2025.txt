@@ -1,0 +1,74 @@
+
+New Individual Project
+Documentation Feedback ~ Deliverable #2
+Software Requirements Specification &
+   Initial Development Schedule
+CMSI 4072 Spring 2025
+=======================================
+
+COMPONENT BREAKDOWN:
+   Not required for this semester's exercise
+
+FUNCTIONAL REQUIREMENTS:
+   There are not enough requirements here to specify what you are trying to
+   build.  Based on your proposal, you will need MANY MANY more requirements
+   to be able to construct, test, and prove out the software.  You have five
+   sub-systems as part of this project, and to only have one requirement for
+   each of them is nowhere near what is called for.  If you have questions
+   about this, feel free to come see me during office hours.
+
+   In addition to not being enough of them, your requirements language isn't
+   in the proper language for the SRS.  If you are following the waterfall
+   method, your requirements should be in the form:
+
+   3.1.1  The Registration subsystem shall display a login window.
+
+   If using Agile, your requirements should be in the form:
+
+   3.1.1  As a Momento user, I want to see a login window so that I can log
+          in to the system.
+
+PERFORMANCE REQUIREMENTS:
+   Not enough, not specific, and contains weasel words.
+
+ENVIRONMENT REQUIREMENTS:
+   Not done.
+
+OVERALL ASSESSMENT:
+   Category                          Points
+   Component Breakdown                 2/2
+   Functional Requirements             0/5
+   Performance Requirements            0/2
+   Environment Requirements            0/1
+                                     =====
+   Subtotal                           2/10
+   ------------------------------------------------------
+   Total Percentage:   2/10 = 2% which is an F on this deliverable.
+
+COMMENTS:
+---------
+Since you told me you 'pivoted' to this project last semester, YOU MUST HAVE
+   an updated SRS for this semester.  The SRS from last semester is for the
+   previous project, so this will wind up being a NEW SRS.
+
+Please see the comments above, and please feel free to come to office hours,
+   if you want more information on this.
+
+
+----------------------------------------------------------------------------
+\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+----------------------------------------------------------------------------
+
+Documentation Feedback ~ Deliverable #5
+Software Requirements Specification Complete
+============================================
+
+OVERALL ASSESSMENT:
+           Category                                Points
+   Comments from first submission incorporated       8/8
+   Spelling and Grammar in document acceptable       2/2
+                                                   =====
+   Subtotal                                        10/10
+   ------------------------------------------------------
+   Total Percentage:   10/10 = 100% which is an A-plus
