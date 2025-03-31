@@ -1,0 +1,55 @@
+
+Continuing Group Project
+Documentation Feedback ~ Deliverable #4
+Updated Software Design Document
+CMSI 4072 Spring 2025
+==========================================
+
+DETAILED CLASS/MODULE DESCRIPTIONS:
+   New classes/modules added 2nd semester [y/n] y
+   New classes/modules details adequate
+      or addressed that nothing new added [y/n] not sure
+
+DETAILED INTERFACE DESCRIPTIONS:
+   New interfaces added 2nd semester [y/n]      y
+   New interfaces details adequate
+      or addressed that nothing new added [y/n] probably OK
+
+DETAILED DATA STRUCTURE DESCRIPTIONS:
+   New data structures added 2nd semester [y/n] y
+   New data structure details adequate
+      or addressed that nothing new added [y/n] probably OK
+
+DETAILED DESIGN DIAGRAMS:
+   New diagrams added 2nd semester [y/n]        n
+   New diagrams adequate
+      or addressed that nothing new added [y/n] n
+
+DATABASE DESIGN AND DESCRIPTION:
+   New ERD/diagrams added 2nd semester [y/n]    n
+   New ERD/diagrams adequate
+      or addressed that nothing new added [y/n] n
+
+
+----------------------------------------------
+OVERALL ASSESSMENT:
+   Category                          Points
+   CSC/CSU Descriptions:                2 of  2
+   Class Descriptions:                  3 of  3
+   Interface Descriptions:              3 of  3
+   Data structure Descriptions:         1 of  1
+   Design diagrams:                     0 of  4
+   Database design/descriptions:        0 of  2
+                                     ===========
+   Subtotal                             9 of 15
+   ------------------------------------------------------
+   Total Percentage:  9/15 = 60% which is a D on this deliverable
+
+Since this updated document doesn't use the same numbering as its previous
+version, it is difficult to tell if you added anything or not.  Your 4071
+document has lots of good design information.  All you had to do was make
+a copy of that document for 4072 and update it to add anything new from
+this semester.  Your 4072 document has no diagrams, you have some details,
+but there are not enough new details to lay out exactly what is new.
+
+Feel free to come to office hours if you want some advice on this.
