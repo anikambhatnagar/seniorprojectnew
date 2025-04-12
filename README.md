@@ -12,79 +12,117 @@ The app aims to simplify daily journaling by removing the pressure of writing. U
 ## Features
 
 📸 Photo Journaling: Capture and save a daily photo with optional vintage filters
+
 😌 Mood Check-ins: Select from multiple mood icons each day
+
 📝 Optional Notes: Add a brief note to each journal entry
+
 🧠 Daily Quotes: Receive a fresh motivational quote each day
+
 📆 Monthly Recaps: Visual summaries of the month’s entries and mood trends
+
 🔐 User Authentication: Sign in securely with Firebase Authentication
+
 ☁️ Persistent Storage: All entries stored in Firebase Firestore
 
 ## Subsystems
 
 Authentication — Handles login, logout, and session state
+
 Journal Entry — Captures photos, moods, and notes
+
 Quote Manager — Fetches and displays daily motivational quotes
+
 Monthly Recap — Aggregates data into a visual summary
+
 Database Services — Interfaces with Firebase for secure data operations
 
 ## Technologies Used
 
 SwiftUI (Frontend)
+
 Firebase Firestore (Database)
+
 Firebase Authentication (User Login)
+
 Xcode 15+ (Development Environment)
+
 XCTest (Unit & Integration Testing)
 
 ## Installation & Setup
 
 Clone the repository from GitHub
+
 Open the project in Xcode
+
 Make sure to install all Firebase dependencies via Swift Package Manager
+
 Add your own GoogleService-Info.plist to enable Firebase
+
 Build and run on a simulator or physical iOS device
 
 ## Usage Instructions
 
 Launch the app and sign in
+
 Tap the camera icon to take and save your daily photo
+
 Tap the smiley face to check in with your mood
+
 Navigate to past entries through the archive
+
 Tap the quote icon to read a daily motivational message
+
 Tap the calendar icon to view your monthly recap
 
 ## Performance
 
 App launch time: < 2 seconds (approx)
+
 Quote fetch time: < 1 second (cached if offline)
+
 Firebase sync latency: < 3 seconds for typical Wi-Fi
+
 Entry save and load verified under both emulator and real device conditions
 
 ## Known Issues / Limitations
 
 Gesture-based UI interactions (e.g., long press) not yet fully testable
+
 Quote API fallback not implemented for offline mode
+
 Only one image per day is supported for now
 
 ## Testing
 
 The app has been rigorously tested via:
+
 Manual Functional Testing: Verifying each user-facing feature
+
 Unit Tests: For QuoteManager, JournalEntryViewModel, etc.
+
 Integration Tests: Covering full journal entry creation and recap generation
+
 Testing procedures are detailed in the Test Procedure Document.
 
 ## Requirements Summary (Agile Format)
 
 As a user, I want to save a photo daily so that I can track memories visually
+
 As a user, I want to record my mood each day so that I can reflect on my emotions
+
 As a user, I want to see a motivational quote every day to start with inspiration
+
 As a user, I want to see a visual recap of my month so I can recognize patterns
+
 As a user, I want my data to be securely stored and synced across devices
 
 ## Environment Requirements
 
 iOS 17 or higher
+
 Swift 5.9+
+
 Firebase project setup with Authentication and Firestore enabled
 
 ## Contributors
