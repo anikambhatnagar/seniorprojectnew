@@ -18,12 +18,19 @@ struct QuoteView: View {
                 .font(.headline)
                 .foregroundColor(.white)
 
-            Text(viewModel.currentQuote)
+            Text("\"\(viewModel.currentQuote)\"")
                 .font(.body)
                 .foregroundColor(.white)
                 .italic()
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+
+
+            Text("- \(viewModel.currentAuthor)")
+                .font(.caption)
+                .foregroundColor(.white.opacity(0.7))
 
             HStack(spacing: 20) {
                 Button(action: {
@@ -44,6 +51,9 @@ struct QuoteView: View {
         .padding()
         .background(Color.white.opacity(0.1))
         .cornerRadius(12)
+        .onAppear {
+            viewModel.fetchNewQuote() // ✅ NOW it's in the right spot
+        }
         .sheet(isPresented: $showShareSheet) {
             ActivityView(activityItems: [viewModel.currentQuote])
         }

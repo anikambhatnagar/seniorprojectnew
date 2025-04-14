@@ -7,22 +7,50 @@
 import Foundation
 
 class QuoteViewModel: ObservableObject {
-    @Published var currentQuote: String = "Be yourself; everyone else is already taken."
-
-    private let quotes = [
-        "Be yourself; everyone else is already taken.",
-        "You are enough just as you are.",
-        "Do something today your future self will thank you for.",
-        "Breathe. You’re doing better than you think.",
-        "It’s a good day to have a good day.",
-        "Feel the feelings, then let them go.",
-        "Inhale confidence. Exhale doubt."
-    ]
+    @Published var currentQuote: String = "Loading quote..."
+    @Published var currentAuthor: String = ""
 
     func fetchNewQuote() {
-        if let newQuote = quotes.randomElement() {
-            currentQuote = newQuote
+        guard let url = URL(string: "https://quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com/quote?token=ipworld") else {
+            print("Invalid URL")
+            return
         }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("01a558aaf4msh316a9331a3f64e1p1f255bjsn3a9f102ca513", forHTTPHeaderField: "X-RapidAPI-Key")
+        request.setValue("quotes-inspirational-quotes-motivational-quotes.p.rapidapi.com", forHTTPHeaderField: "X-RapidAPI-Host")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("API error: \(error.localizedDescription)")
+                return
+            }
+
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+
+            do {
+                let decoded = try JSONDecoder().decode(RapidQuote.self, from: data)
+                DispatchQueue.main.async {
+                    self.currentQuote = decoded.text
+                    self.currentAuthor = decoded.author
+                    print("✅ Quote loaded: \(decoded.text) — \(decoded.author)")
+                }
+            } catch {
+                print("Failed to decode quote: \(error)")
+                if let raw = String(data: data, encoding: .utf8) {
+                    print("Raw response: \(raw)")
+                }
+            }
+
+        }.resume()
     }
 }
 
+struct RapidQuote: Codable {
+    let text: String
+    let author: String
+}
