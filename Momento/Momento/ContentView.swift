@@ -276,6 +276,7 @@ struct HomePageView: View {
     @Binding var showCamera: Bool
     @Binding var journalEntries: [JournalEntry]
     @State private var showPhotoLibrary = false
+    @StateObject private var quoteViewModel = QuoteViewModel()
     
     var currentMonthEntries: [JournalEntry] {
             let calendar = Calendar.current
@@ -334,6 +335,10 @@ struct HomePageView: View {
                         .padding(.horizontal, 40)
                         .padding(.bottom, 30)
                     
+                    QuoteView(viewModel: quoteViewModel)
+                        .padding(.horizontal)
+                        .padding(.bottom, 10)
+
                     MoodGraphView(data: pastMonthMoodData)
                                         .frame(height: 200)
                                         .padding()

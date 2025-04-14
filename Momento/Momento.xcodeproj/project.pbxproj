@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D4A8ACCC2DAD9E95006B9815 /* QuoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8ACCB2DAD9E95006B9815 /* QuoteViewModel.swift */; };
+		D4A8ACCE2DAD9EC3006B9815 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A8ACCD2DAD9EC3006B9815 /* QuoteView.swift */; };
 		D4DF87FA2CCB25FB0058D514 /* MomentoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF87F92CCB25FB0058D514 /* MomentoApp.swift */; };
 		D4DF87FC2CCB25FB0058D514 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF87FB2CCB25FB0058D514 /* ContentView.swift */; };
 		D4DF87FE2CCB25FC0058D514 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4DF87FD2CCB25FC0058D514 /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D4A8ACCB2DAD9E95006B9815 /* QuoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteViewModel.swift; sourceTree = "<group>"; };
+		D4A8ACCD2DAD9EC3006B9815 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		D4DF87F62CCB25FB0058D514 /* Momento.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Momento.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4DF87F92CCB25FB0058D514 /* MomentoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentoApp.swift; sourceTree = "<group>"; };
 		D4DF87FB2CCB25FB0058D514 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 			children = (
 				D4DF87F92CCB25FB0058D514 /* MomentoApp.swift */,
 				D4DF87FB2CCB25FB0058D514 /* ContentView.swift */,
+				D4A8ACCB2DAD9E95006B9815 /* QuoteViewModel.swift */,
+				D4A8ACCD2DAD9EC3006B9815 /* QuoteView.swift */,
 				D4DF87FD2CCB25FC0058D514 /* Assets.xcassets */,
 				D4DF87FF2CCB25FC0058D514 /* Preview Content */,
 			);
@@ -290,8 +296,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4A8ACCC2DAD9E95006B9815 /* QuoteViewModel.swift in Sources */,
 				D4DF87FC2CCB25FB0058D514 /* ContentView.swift in Sources */,
 				D4DF87FA2CCB25FB0058D514 /* MomentoApp.swift in Sources */,
+				D4A8ACCE2DAD9EC3006B9815 /* QuoteView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
