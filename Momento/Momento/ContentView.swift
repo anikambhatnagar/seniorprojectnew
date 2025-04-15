@@ -11,11 +11,17 @@ import FirebaseCore
 import Charts
 import Foundation
 
-struct JournalEntry: Identifiable, Hashable {
+struct JournalEntry: Identifiable, Hashable,  Equatable {
     let id = UUID()
     let date: Date
     let photo: UIImage
+    var note: String? = nil
+    
+    static func == (lhs: JournalEntry, rhs: JournalEntry) -> Bool {
+            return lhs.id == rhs.id
+    }
 }
+
 
 struct Weather: Codable {
     let current_weather: CurrentWeather
@@ -41,7 +47,6 @@ class WeatherFetcher: ObservableObject {
             return
         }
         
-        // Debugging: Print the URL
         print("Requesting weather data from: \(urlString)")
         
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -119,6 +124,26 @@ struct PhotoPickerView: UIViewControllerRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
+    
+    func presentNoteInput(for image: UIImage) {
+        let alert = UIAlertController(title: "Add Note", message: "Optional journal entry", preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.placeholder = "Type something..."
+        }
+
+        alert.addAction(UIAlertAction(title: "Save", style: .default, handler: { _ in
+            let note = alert.textFields?.first?.text
+            let newEntry = JournalEntry(date: Date(), photo: image, note: note)
+            journalEntries.append(newEntry)
+        }))
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+        if let controller = UIApplication.shared.windows.first?.rootViewController {
+            controller.present(alert, animated: true, completion: nil)
+        }
+    }
+
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: PhotoPickerView
@@ -129,17 +154,16 @@ struct PhotoPickerView: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let image = info[.editedImage] as? UIImage {
-                // Add the selected photo to the journal entries
-                let newEntry = JournalEntry(date: Date(), photo: image)
                 DispatchQueue.main.async {
-                    self.parent.journalEntries.append(newEntry) // Update the state
+                    self.parent.presentNoteInput(for: image)
                 }
 
-                // Upload the image to Firebase
+                // Optional: still upload image to Firebase
                 uploadImageToFirebase(image: image)
             }
             parent.isPresented = false
         }
+
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             parent.isPresented = false
@@ -372,7 +396,7 @@ struct HomePageView: View {
                                 .cornerRadius(20)
                         }
                         
-                        NavigationLink(destination: JournalArchiveView(entries: journalEntries)) {
+                        NavigationLink(destination: JournalArchiveView(entries: $journalEntries)) {
                             Text("Your Journal Archive")
                                 .font(.custom("Times New Roman", size: 18))
                                 .fontWeight(.medium)
@@ -382,6 +406,7 @@ struct HomePageView: View {
                                 .background(Color.white.opacity(0.8))
                                 .cornerRadius(20)
                         }
+
                         
                         NavigationLink(destination: MonthlyRecapView(entries: currentMonthEntries)) {
                             Text("Your Monthly Recap")
@@ -468,7 +493,9 @@ struct EmptyMonthlyRecapView: View {
 }
 
 struct JournalArchiveView: View {
-    var entries: [JournalEntry]
+    @Binding var entries: [JournalEntry]
+    @State private var selectedEntry: JournalEntry? = nil
+    @State private var showEditSheet = false
 
     var body: some View {
         ZStack {
@@ -489,17 +516,52 @@ struct JournalArchiveView: View {
                             GridItem(.flexible())
                         ], spacing: 16) {
                             ForEach(entries) { entry in
-                                VStack {
+                                VStack(alignment: .leading, spacing: 4) {
                                     Image(uiImage: entry.photo)
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 100, height: 100)
                                         .clipped()
                                         .cornerRadius(10)
-                                    
+
                                     Text(entry.date, style: .date)
                                         .font(.caption)
                                         .foregroundColor(.gray)
+
+                                    if let note = entry.note, !note.isEmpty {
+                                        Text("📝 \(note)")
+                                            .font(.caption2)
+                                            .foregroundColor(.white)
+                                            .lineLimit(3)
+                                    }
+                                }
+                                .onTapGesture {
+                                    selectedEntry = entry
+                                    showEditSheet = true
+                                }
+                            }
+
+                        }
+                        .sheet(isPresented: $showEditSheet) {
+                            if let selected = selectedEntry,
+                               let index = entries.firstIndex(where: { $0.id == selected.id }) {
+                                EditEntryView(
+                                    entry: $entries[index],
+                                    onDelete: {
+                                        entries.remove(at: index)
+                                        showEditSheet = false
+                                    },
+                                    onSave: {
+                                        showEditSheet = false
+                                    }
+                                )
+                            } else {
+                                VStack {
+                                    Text("Failed to load entry.")
+                                        .foregroundColor(.red)
+                                    Button("Close") {
+                                        showEditSheet = false
+                                    }
                                 }
                             }
                         }
@@ -509,6 +571,51 @@ struct JournalArchiveView: View {
             }
         }
         .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
+struct EditEntryView: View {
+    @Binding var entry: JournalEntry
+    var onDelete: () -> Void
+    var onSave: () -> Void
+
+    @State private var updatedNote: String = ""
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Photo")) {
+                    Image(uiImage: entry.photo)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 200)
+                }
+
+                Section(header: Text("Note")) {
+                    TextField("Edit note", text: $updatedNote)
+                }
+
+                Section {
+                    Button(action: {
+                        entry.note = updatedNote
+                        onSave()
+                    }) {
+                        Text("Save Changes")
+                    }
+
+                    Button(action: {
+                        onDelete()
+                    }) {
+                        Text("Delete Entry")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+            .navigationTitle("Edit Entry")
+            .onAppear {
+                updatedNote = entry.note ?? ""
+            }
+        }
     }
 }
 
