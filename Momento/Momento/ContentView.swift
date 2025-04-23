@@ -340,12 +340,6 @@ struct HomePageView: View {
                     
                     Spacer(minLength: 60)
                     
-                    Image("LOGO")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 120, height: 120)
-                        .padding(.top, 20)
-                    
                     Text("Welcome to Momento")
                         .font(.custom("Times New Roman", size: 28))
                         .fontWeight(.medium)
@@ -557,7 +551,7 @@ struct JournalArchiveView: View {
                                 )
                             } else {
                                 VStack {
-                                    Text("Failed to load entry.")
+                                    Text("Failed to load entry")
                                         .foregroundColor(.red)
                                     Button("Close") {
                                         showEditSheet = false
