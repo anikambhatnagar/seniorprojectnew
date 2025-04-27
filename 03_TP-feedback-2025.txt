@@ -48,3 +48,8 @@ OVERALL ASSESSMENT:
    Subtotal                                        10/10
    ------------------------------------------------------
    Total Percentage:   10/10 = 100% which is an A-plus
+
+Very nice work here.  You have done a good job of providing a sequencing if
+steps with the observations that go with each action.  However, you haven't
+added any requirements to your SRS, so you have only done the minimum on the
+document.  But, I think you earn full marks on this deliverable.
